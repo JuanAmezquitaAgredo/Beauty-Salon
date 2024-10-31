@@ -43,7 +43,7 @@ export const Input = ({
         error={error}
         {...props}
       />
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p style={{ color: "red", fontSize: "12px", marginTop: "5px" }}>{error}</p>}
     </>
   );
 };

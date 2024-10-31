@@ -5,16 +5,17 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import styled from "styled-components";
+import Button from "@/ui/atoms/button";
 
 const loginSchema = yup.object().shape({
     userName: yup
         .string()
-        .email('Invalid email address')
-        .required('Username is required'),
+        .email('Email invalido')
+        .required('Email Requerido'),
     password: yup
         .string()
-        .min(8, 'Password must be at least 8 characters long')
-        .required('Password is required')     
+        .min(8, 'La contraseña debe tener al menos 8 caracteres')
+        .required('Contraseña Requerida'),     
 });
 
 const FormContainer = styled.form`
@@ -31,21 +32,6 @@ const Title = styled.h2`
     font-size: 1.5rem;
     font-weight: 600;
     text-align: center;
-`;
-
-const SubmitButton = styled.button`
-    width: 100%;
-    padding: 0.5rem 1rem;
-    background-color: #3b82f6;
-    color: white;
-    font-weight: 500;
-    border-radius: 0.375rem;
-    text-align: center;
-    cursor: pointer;
-
-    &:hover {
-        background-color: #2563eb;
-    }
 `;
 
 const LoginForm = () => {
@@ -84,9 +70,7 @@ const LoginForm = () => {
                 error={errors.password}
                 placeholder="Ingrese Contraseña"
             />
-            <SubmitButton type="submit">
-                Iniciar Sesión
-            </SubmitButton>
+            <Button type="submit" label="Iniciar Sesión"/>
         </FormContainer>
     );
 };
