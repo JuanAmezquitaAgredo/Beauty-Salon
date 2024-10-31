@@ -1,5 +1,5 @@
 'use client'
-import LoginForm from "@/ui/organisms/auth/LoginForm";
+import RegisterForm from "@/ui/organisms/register/RegisterForm";
 import styled from "styled-components";
 
 const PageContainer = styled.div`
@@ -13,7 +13,7 @@ const PageContainer = styled.div`
 const CardContainer = styled.div`
     width: 100%;
     max-width: 28rem; 
-    padding: 1.5rem; 
+    padding: 1rem; 
     background-color: white;
     border-radius: 0.5rem; 
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
@@ -25,15 +25,15 @@ const InstructionText = styled.p`
     color: #666666;
 `;
 
-export const LoginTemplate = () => {
+export const RegisterTemplate = () => {
     return (
         <PageContainer>
             <CardContainer>
-                <InstructionText>Inicia sesión en tu cuenta</InstructionText>
-                <LoginForm />
+                <InstructionText>Registrate</InstructionText>
+                <RegisterForm />
             </CardContainer>
         </PageContainer>
     );
 };
 
-export default LoginTemplate;
+export default RegisterTemplate;

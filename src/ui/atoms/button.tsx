@@ -9,15 +9,17 @@ interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement>{
 const StyledButton = styled.button`
     width: 100%;
     padding: 0.5rem 1rem;
-    background-color: #3b82f6;
-    color: white;
+    border-color: #7b7b7b;
+    background-color: #B8A1C9;
+    color: #FFFFFF;
     font-weight: 500;
     border-radius: 0.375rem;
+    transition: background-color 0.3s ease;
     text-align: center;
     cursor: pointer;
 
     &:hover {
-        background-color: #2563eb;
+        background-color: #9e89b2;
     }
 `;
 
