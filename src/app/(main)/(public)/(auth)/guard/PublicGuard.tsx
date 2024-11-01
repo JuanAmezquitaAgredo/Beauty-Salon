@@ -1,4 +1,5 @@
 'use client'
+import Loading from '@/ui/atoms/loading';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect } from 'react'
@@ -24,7 +25,7 @@ export default function PublicGuard(
 
     if(status === 'loading') {
         return (
-            <div>Loading...</div>
+            <>{Loading()}</>
         )
     }
 }
