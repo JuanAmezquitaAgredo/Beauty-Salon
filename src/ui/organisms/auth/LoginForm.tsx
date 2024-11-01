@@ -53,7 +53,6 @@ const LoginForm = () => {
     });
 
     const handleLogin = async (data: ILoginRequest) => {
-        console.log(data);
         try {
             const result = await signIn("credentials", {
                 redirect: false,
