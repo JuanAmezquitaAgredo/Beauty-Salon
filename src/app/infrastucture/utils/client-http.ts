@@ -1,4 +1,4 @@
-const defaultBaseUrl = "https://vacantsbackendgates-production.up.railway.app/api/v1";
+const defaultBaseUrl = "https://beautysalongates-production.up.railway.app/api/v1";
 
 export class HttpClient {
   private baseUrl: string;
@@ -27,7 +27,7 @@ export class HttpClient {
 
     return this.handleResponse(response);
   }
-  
+
   async delete<T>(url: string): Promise<T> {
     const headers = await this.getHeader();
     const response = await fetch(`${this.baseUrl}/${url}`, {
@@ -59,12 +59,8 @@ export class HttpClient {
     if (!response.ok) {
       const errorData = await response.json();
       console.log(errorData);
-      throw new Error(errorData.message || "Ocurrió un error en la peticion");
+      throw errorData;
     }
-    try {
-      return await response.json();
-    } catch {
-      return {};
-    }
+    return await response.json();
   }
 }

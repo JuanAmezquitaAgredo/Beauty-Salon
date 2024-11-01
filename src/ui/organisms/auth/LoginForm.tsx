@@ -6,6 +6,9 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import styled from "styled-components";
 import Button from "@/ui/atoms/button";
+import { signIn } from "next-auth/react";
+import { ErrorResponse, FieldError } from "@/app/core/application/dto/common/error-response.dto";
+import { useRouter } from "next/navigation";
 
 const loginSchema = yup.object().shape({
     userName: yup
@@ -18,6 +21,7 @@ const loginSchema = yup.object().shape({
         .required('Contraseña Requerida'),     
 });
 
+
 const FormContainer = styled.form`
     width: 100%;
     max-width: 24rem;
@@ -26,16 +30,17 @@ const FormContainer = styled.form`
     display: flex;
     flex-direction: column;
     gap: 1rem;
-`;
+    `;
 
 const Title = styled.h2`
     font-size: 1.5rem;
     font-weight: 600;
     text-align: center;
     color: #D4AF37;
-`;
+    `;
 
 const LoginForm = () => {
+    const router = useRouter();
     const {
         control,
         handleSubmit,
@@ -47,9 +52,45 @@ const LoginForm = () => {
         resolver: yupResolver(loginSchema)
     });
 
-    const handleLogin = (data: ILoginRequest) => {
+    const handleLogin = async (data: ILoginRequest) => {
         console.log(data);
+        try {
+            const result = await signIn("credentials", {
+                redirect: false,
+                username: data.userName,
+                password: data.password
+            })
+
+            if(result?.error){
+                console.log("ocurio un error", JSON.parse(result.error));
+                handleError( JSON.parse(result.error));
+                return
+            }
+
+            router.push("/dashboard/services");
+        } catch (error) {
+            console.log(error);
+        }
     }
+
+    const handleError = (error:unknown) => {
+        const errorData = error as ErrorResponse
+        if(errorData.errors && errorData){
+            if(Array.isArray(errorData.errors) && "field" in errorData.errors[0]){
+                errorData.errors.forEach((fieldError) => {
+                    const { field, error } = fieldError as FieldError;
+                    setError(field as keyof ILoginRequest, { message: error });
+                });
+            }else{
+                if("message" in errorData.errors[0]){
+                    setError("userName", {
+                        message: errorData.errors[0].message
+                    })
+                }
+            }
+        };
+    };
+
 
     return (
         <FormContainer onSubmit={handleSubmit(handleLogin)}>
