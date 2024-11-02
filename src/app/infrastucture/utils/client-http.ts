@@ -7,18 +7,19 @@ export class HttpClient {
     this.baseUrl = baseUrl || defaultBaseUrl;
   }
 
-  async get<T>(url: string): Promise<T> {
-    const headers = await this.getHeader();
+  async get<T>(url: string, token?: string): Promise<T> {
+    const headers = await this.getHeader(token);
     const response = await fetch(`${this.baseUrl}/${url}`, {
       headers: headers,
       method: "GET",
-      cache: "no-store"
+      cache: "no-store",
     });
 
     return this.handleResponse(response);
   }
-  async post<T, B>(url: string, body: B): Promise<T> {
-    const headers = await this.getHeader();
+
+  async post<T, B>(url: string, body: B, token?: string): Promise<T> {
+    const headers = await this.getHeader(token);
     const response = await fetch(`${this.baseUrl}/${url}`, {
       headers: headers,
       method: "POST",
@@ -28,8 +29,8 @@ export class HttpClient {
     return this.handleResponse(response);
   }
 
-  async delete<T>(url: string): Promise<T> {
-    const headers = await this.getHeader();
+  async delete<T>(url: string, token?: string): Promise<T> {
+    const headers = await this.getHeader(token);
     const response = await fetch(`${this.baseUrl}/${url}`, {
       headers: headers,
       method: "DELETE",
@@ -37,9 +38,8 @@ export class HttpClient {
     return this.handleResponse(response);
   }
 
-
-  async put<T, B>(url: string, body: B): Promise<T> {
-    const headers = await this.getHeader();
+  async put<T, B>(url: string, body: B, token?: string): Promise<T> {
+    const headers = await this.getHeader(token);
     const response = await fetch(`${this.baseUrl}/${url}`, {
       headers: headers,
       method: "PUT",
@@ -49,10 +49,16 @@ export class HttpClient {
     return this.handleResponse(response);
   }
 
-  private async getHeader() {
-    return {
+  private async getHeader(token?: string) {
+    const headers: HeadersInit = {
       "Content-Type": "application/json",
     };
+
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
+    return headers;
   }
 
   private async handleResponse(response: Response) {

@@ -18,4 +18,15 @@ export class AuthService implements PAuth{
             req
         );
     }
+
+    async getAllServices(token: string): Promise<IServicesResponse> {
+        try {
+            const response = this.clientHttp.get<IServicesResponse>(`services?page=1&size=5`,token);
+            return response;
+          } catch (error) {
+            console.log(error);
+            throw error;
+          }
+    }
+
 }
