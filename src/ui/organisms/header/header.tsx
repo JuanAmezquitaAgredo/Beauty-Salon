@@ -22,8 +22,8 @@ const StyleTitle = styled.h1`
 `;
 
 const StyledButton = styled(Button)`
-  width: 100px;
-  height: 50px;
+  width: 150px;
+  height: 40px;
   background-color: #B8A1C9;
   color: #FFFFFF;
   border-radius: 5px;

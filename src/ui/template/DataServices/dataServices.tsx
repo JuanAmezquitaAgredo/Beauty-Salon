@@ -1,12 +1,21 @@
 'use client'
 import MainComponent from "@/ui/organisms/main/main";
+import styled from "styled-components";
 
-interface IDataService{
+interface IDataService {
     pagination: Pageable
     data: IServicesResponse
 }
 
-export default function DataService({data, pagination}: IDataService){
+const StyledContent = styled.div`
+   display: flex;
+   justify-content: baseline;
+   align-items: center;
+   width: 80%;
+   height: 80vh;
+   margin: 30px;
+`;
+export default function DataService({ data, pagination }: IDataService) {
 
     const handleEdit = () => {
         // Implement your edit logic here
@@ -16,6 +25,8 @@ export default function DataService({data, pagination}: IDataService){
         // Implement your delete logic here
     }
     return (
-        <MainComponent data={data} onEdit={handleEdit} onDelete={handleDelete} pagination={pagination}/>
+        <StyledContent>
+            <MainComponent data={data} onEdit={handleEdit} onDelete={handleDelete} pagination={pagination} />
+        </StyledContent>
     )
 }

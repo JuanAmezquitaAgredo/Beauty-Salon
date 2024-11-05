@@ -1,4 +1,5 @@
 'use client'
+import Button from "@/ui/atoms/button";
 import ButtonPag from "@/ui/atoms/buttonPag";
 import TableComponent from "@/ui/molecules/common/Table";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -21,8 +22,28 @@ const Pagination = styled.div`
 
 const MainContent = styled.div`
     width: 100%;
-    max-width: 1000px;
-    margin: 0 auto;
+    height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+`;
+
+const StyledDiv = styled.div`
+    width: 100%;
+`;
+
+const StyledButton = styled(Button)`
+  width: 200px;
+  height: 50px;
+  background-color: #B8A1C9;
+  color: #FFFFFF;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  border: none;
+  &:hover {
+        background-color: #9e89b2;
+    }
 `;
 
 export default function MainComponent({ data, onEdit, onDelete, pagination }: MainProps) {
@@ -53,9 +74,15 @@ export default function MainComponent({ data, onEdit, onDelete, pagination }: Ma
 
     const tbody = content;
 
+    const handleAdd = () => {
+    };
+
     return (
         <MainContent>
-            <TableComponent thead={thead} tbody={tbody} onEdit={onEdit} onDelete={onDelete} />
+            <StyledDiv>
+                <StyledButton type='button' label='Agregar Servicio' onClick={handleAdd} />
+                <TableComponent thead={thead} tbody={tbody} onEdit={onEdit} onDelete={onDelete} />
+            </StyledDiv>
             <Pagination>
                 <ButtonPag label="<" onClick={() => HandleClickBack(courrentPage - 1)} />
                 Página {courrentPage} de {data.totalPages}
