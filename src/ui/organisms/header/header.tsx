@@ -13,20 +13,21 @@ const StyleHeader = styled.header`
     justify-content: space-between;
     align-items: center;
     padding: 0.5rem;
+    background-color: #FAF3EF;
 `;
 
 const StyleTitle = styled.h1`
-    font-size: 20px;
+    font-size: 35px;
     color: #D4AF37;    
 `;
 
 const StyledButton = styled(Button)`
   width: 100px;
   height: 50px;
-  border-color: #7b7b7b;
   background-color: #B8A1C9;
   color: #FFFFFF;
   border-radius: 5px;
+  border: none;
   &:hover {
         background-color: #9e89b2;
     }
@@ -38,8 +39,8 @@ export default function HeaderComponent() {
     }
     return (
         <StyleHeader>
-            <FaRegUserCircle size={45}/>
-            <StyleTitle>Menu de Administrador</StyleTitle>
+            <FaRegUserCircle size={50}/>
+            <StyleTitle>Salon de Belleza</StyleTitle>
             <StyledButton type='button' label='Cerrar Sesión' onClick={handleSignOut} />
         </StyleHeader>
     )

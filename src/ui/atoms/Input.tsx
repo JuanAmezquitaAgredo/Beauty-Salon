@@ -9,11 +9,11 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 
-const StyledInput = styled.input<{ error?: string }>`
+const StyledInput = styled.input<{ $error?: string }>`
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   color: #5f5f5f;
-  border: ${({ error }) => (error ? '1px solid #f79393' : '1px solid #e2e8f0')}; 
+  border: ${({ $error }) => ($error ? '1px solid #f79393' : '1px solid #e2e8f0')}; 
   background-color: white;
   
   &::placeholder {
@@ -40,7 +40,7 @@ export const Input = ({
         type={type}
         name={name}
         placeholder={placeholder}
-        error={error}
+        $error={error}
         {...props}
       />
       {error && <p style={{ color: "#f79393", fontSize: "12px", marginTop: "5px" }}>{error}</p>}

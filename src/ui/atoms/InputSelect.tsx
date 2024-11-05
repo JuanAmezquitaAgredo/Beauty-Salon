@@ -7,11 +7,11 @@ interface InputselectProps extends React.SelectHTMLAttributes<HTMLSelectElement>
     name?: string;
 }
 
-const StyledSelect = styled.select<{ error?: string }>`
+const StyledSelect = styled.select<{ $error?: string }>`
   padding: 0.5rem 1rem;
   border-radius: 0.5rem;
   color: #747576;
-  border: ${({ error }) => (error ? '1px solid #f08484' : '1px solid #e2e8f0')};
+  border: ${({ $error }) => ($error ? '1px solid #f08484' : '1px solid #e2e8f0')};
   background-color: white;
 
   &::placeholder {
@@ -36,7 +36,7 @@ const InputSelect = ({
         <div>
             <StyledSelect
                 name={name}
-                error={error}
+                $error={error}
                 {...props}
             >
                 <option>{placeholder}</option>

@@ -25,6 +25,8 @@ export default async function ServicePage() {
   console.log(response);
 
   return (
-    <HeaderComponent/>
+    <>
+    desde servicios
+    </>
   )
 }
