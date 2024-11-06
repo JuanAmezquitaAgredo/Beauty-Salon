@@ -19,7 +19,7 @@ const registerSchema = yup.object().shape({
         .number()
         .min(10, 'El valor minimo es 10')
         .required('El precio es requerido')
-})
+});
 
 const FormContainer = styled.form`
     width: 100%;
@@ -41,21 +41,40 @@ const Title = styled.h2`
 const RegisterForm = () => {
     const {
         control,
-        handleSubmit,
+        handleSubmit: onSubmit, 
         setError,
         formState: { errors }
     } = useForm<IRegisterServiceRequest>({
         mode: "onChange",
         reValidateMode: "onChange",
         resolver: yupResolver(registerSchema)
-    })
+    });
 
-    const handleRegister = (data: IRegisterServiceRequest) => {
-        console.log(data);
-    }
+    const handleRegister = async (data: IRegisterServiceRequest) => {
+        try {
+            const response = await fetch("/api/services/create", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                throw new Error("Error al registrar el servicio");
+            }
+
+            alert('Servicio registrado exitosamente');
+            return await response.json();
+            
+        } catch (error) {
+            console.error("Error en el POST:", error);
+            throw error;
+        }
+    };
 
     return (
-        <FormContainer onSubmit={handleSubmit(handleRegister)}>
+        <FormContainer onSubmit={onSubmit(handleRegister)}>
             <Title>Registro</Title>
 
             <FormField<IRegisterServiceRequest>
@@ -86,7 +105,6 @@ const RegisterForm = () => {
             />
 
             <Button type="submit" label="Registrar" />
-
         </FormContainer>
     );
 };

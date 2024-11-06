@@ -6,7 +6,13 @@ const useRegisterService = new ServicesService();
 
 // POST
 export async function POST(req: Request) {
-    const body = await req.json() as IRegisterServiceRequest;
-    const NewService = await useRegisterService.registerService(body);
-    return NextResponse.json(NewService, { status: 200});
+    try {
+        const body: IRegisterServiceRequest = await req.json();
+        const newService = await useRegisterService.registerService(body);
+        
+        return NextResponse.json(newService, { status: 200 });
+    } catch (error) {
+        console.error("Error en el servidor:", error);
+        return NextResponse.json({ error: "Error al procesar la solicitud" }, { status: 500 });
+    }
 }
