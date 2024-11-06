@@ -68,28 +68,33 @@ export default function TableComponent({ thead, tbody, onEdit, onDelete }: ITabl
         </tr>
       </thead>
       <tbody>
-        {tbody.map((row, rowIndex) => (
-          <tr key={rowIndex}>
-            {thead.map((header, cellIndex) => (
-              <td key={cellIndex}>{row[header]}</td>
-            ))}
-            <td className='Colum-Buttons'>
-              <ActionButton 
-                className="edit" 
-                onClick={() => onEdit && onEdit(rowIndex)}
-              >
-                Editar
-              </ActionButton>
-              <ActionButton 
-                className="delete" 
-                onClick={() => onDelete && onDelete(rowIndex)}
-              >
-                Eliminar
-              </ActionButton>
-            </td>
-          </tr>
-        ))}
+        {tbody.map((row, rowIndex) => {
+          const id = row[thead[0]]; 
+
+          return (
+            <tr key={rowIndex}>
+              {thead.map((header, cellIndex) => (
+                <td key={cellIndex}>{row[header]}</td>
+              ))}
+              <td className="Colum-Buttons">
+                <ActionButton
+                  className="edit"
+                  onClick={() => onEdit && onEdit(id)} 
+                >
+                  Editar
+                </ActionButton>
+                <ActionButton
+                  className="delete"
+                  onClick={() => onDelete && onDelete(id)} 
+                >
+                  Eliminar
+                </ActionButton>
+              </td>
+            </tr>
+          );
+        })}
       </tbody>
     </StyledTable>
   );
 }
+

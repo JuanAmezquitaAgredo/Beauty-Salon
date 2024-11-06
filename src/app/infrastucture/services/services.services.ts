@@ -29,4 +29,14 @@ export class ServicesService implements PServices{
             throw error;
           }
     }
-}
+
+    async deleteService(id: number){
+      try {
+        const deleteService = this.clientHttp.delete(`services/${id}`);
+        return deleteService;
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    }
+} 

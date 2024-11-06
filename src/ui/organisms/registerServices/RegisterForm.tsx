@@ -2,9 +2,14 @@ import { IRegisterServiceRequest } from "@/app/core/application/dto/services/reg
 import Button from "@/ui/atoms/button";
 import FormField from "@/ui/molecules/common/FormField";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import * as yup from "yup";
+
+interface Iprops{
+    onClose: () => void;
+}
 
 const registerSchema = yup.object().shape({
     name: yup
@@ -38,7 +43,9 @@ const Title = styled.h2`
     color: #D4AF37;
 `;
 
-const RegisterForm = () => {
+const RegisterForm = ({onClose}:Iprops) => {
+
+    const router = useRouter();
     const {
         control,
         handleSubmit: onSubmit, 
@@ -65,6 +72,8 @@ const RegisterForm = () => {
             }
 
             alert('Servicio registrado exitosamente');
+            router.refresh();
+            onClose();
             return await response.json();
             
         } catch (error) {

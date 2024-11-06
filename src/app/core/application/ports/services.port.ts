@@ -17,4 +17,11 @@ export interface PServices{
      */
 
     registerService(service: IRegisterServiceRequest): Promise<IRegisterServiceResponse>
+
+    /**
+     * Delete a service
+     * @param {number} - Delete Request
+     */
+    
+    deleteService(id: number): Promise<void>
 }

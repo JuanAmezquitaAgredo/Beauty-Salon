@@ -1,0 +1,3 @@
+interface IDeleteServiceRequest {
+    id : number;
+}
