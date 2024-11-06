@@ -29,5 +29,4 @@ export class ServicesService implements PServices{
             throw error;
           }
     }
-
 }
