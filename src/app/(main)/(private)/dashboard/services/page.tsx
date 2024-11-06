@@ -26,7 +26,7 @@ export default async function ServicePage({ searchParams }: IProps) {
     return <div>Loading...</div>
   }
   const token = session.user.token as string;
-  const response = await useServicesservice.getAllServices({page, token, size: 6});
+  const response = await useServicesservice.getAllServices({page, token, size: 10});
 
   return (
     <>

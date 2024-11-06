@@ -22,9 +22,18 @@ const StyledTable = styled.table`
     background-color: #FAF3EF;
     color: #D4AF37;
   }
+
+  td {
+    color: #4d4d4d;
+  }
   
   tr:nth-child(even) {
     background-color: #f2f2f2;
+  }
+
+  td.Colum-Buttons{
+    width: 180px;
+    text-align: center;
   }
 `;
 
@@ -37,12 +46,12 @@ const ActionButton = styled.button`
   font-size: 14px;
 
   &.edit {
-    background-color: #4CAF50;
+    background-color: #4caf4fa2;
     color: white;
   }
 
   &.delete {
-    background-color: #f44336;
+    background-color: #f443368f;
     color: white;
   }
 `;
@@ -64,7 +73,7 @@ export default function TableComponent({ thead, tbody, onEdit, onDelete }: ITabl
             {thead.map((header, cellIndex) => (
               <td key={cellIndex}>{row[header]}</td>
             ))}
-            <td>
+            <td className='Colum-Buttons'>
               <ActionButton 
                 className="edit" 
                 onClick={() => onEdit && onEdit(rowIndex)}
