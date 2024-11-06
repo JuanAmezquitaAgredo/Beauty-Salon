@@ -1,5 +1,17 @@
+import { authOptions } from "@/app/api/auth";
+import { DefaultSession, getServerSession } from "next-auth";
+
 const defaultBaseUrl = "https://beautysalongates-production.up.railway.app/api/v1";
 
+interface Session extends DefaultSession {
+  user: {
+      id?: string;
+      token?: string;
+      name?: string | null;
+      email?: string | null;
+      image?: string | null;
+  };
+}
 export class HttpClient {
   private baseUrl: string;
 
@@ -7,8 +19,8 @@ export class HttpClient {
     this.baseUrl = baseUrl || defaultBaseUrl;
   }
 
-  async get<T>(url: string, token?: string): Promise<T> {
-    const headers = await this.getHeader(token);
+  async get<T>(url: string): Promise<T> {
+    const headers = await this.getHeader();
     const response = await fetch(`${this.baseUrl}/${url}`, {
       headers: headers,
       method: "GET",
@@ -18,8 +30,8 @@ export class HttpClient {
     return this.handleResponse(response);
   }
 
-  async post<T, B>(url: string, body: B, token?: string): Promise<T> {
-    const headers = await this.getHeader(token);
+  async post<T, B>(url: string, body: B): Promise<T> {
+    const headers = await this.getHeader();
     const response = await fetch(`${this.baseUrl}/${url}`, {
       headers: headers,
       method: "POST",
@@ -29,8 +41,8 @@ export class HttpClient {
     return this.handleResponse(response);
   }
 
-  async delete<T>(url: string, token?: string): Promise<T> {
-    const headers = await this.getHeader(token);
+  async delete<T>(url: string): Promise<T> {
+    const headers = await this.getHeader();
     const response = await fetch(`${this.baseUrl}/${url}`, {
       headers: headers,
       method: "DELETE",
@@ -38,8 +50,8 @@ export class HttpClient {
     return this.handleResponse(response);
   }
 
-  async put<T, B>(url: string, body: B, token?: string): Promise<T> {
-    const headers = await this.getHeader(token);
+  async put<T, B>(url: string, body: B): Promise<T> {
+    const headers = await this.getHeader();
     const response = await fetch(`${this.baseUrl}/${url}`, {
       headers: headers,
       method: "PUT",
@@ -49,7 +61,11 @@ export class HttpClient {
     return this.handleResponse(response);
   }
 
-  private async getHeader(token?: string) {
+  private async getHeader() {
+
+    const session = await getServerSession(authOptions) as Session;
+    const token = session.user.token as string;
+
     const headers: HeadersInit = {
       "Content-Type": "application/json",
     };

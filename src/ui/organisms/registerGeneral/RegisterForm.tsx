@@ -1,4 +1,4 @@
-import { IRegisterRequest } from "@/app/core/application/dto/register/register-request.dto";
+import { IRegisterRequest } from "@/app/core/application/dto/services/register-request.dto";
 import Button from "@/ui/atoms/button";
 import FormField from "@/ui/molecules/common/FormField";
 import { FormSelectField } from "@/ui/molecules/common/FormSelectField";
@@ -8,15 +8,15 @@ import styled from "styled-components";
 import * as yup from "yup";
 
 const registerSchema = yup.object().shape({
-    userName: yup
+    name: yup
         .string()
         .min(1, 'El nombre de usuario debe tener al menos 1 caracter')
         .required('Nombre de usuario Requerido'),
-    password: yup
+    description: yup
         .string()
         .min(8, 'La contraseña debe tener al menos 8 caracteres')
         .required('Contraseña Requerida'),
-    firstName: yup
+    price: yup
         .string()
         .min(1, 'El nombre debe tener al menos 1 caracter')
         .required('Nombre Requerido'),

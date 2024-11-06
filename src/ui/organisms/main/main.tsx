@@ -8,8 +8,10 @@ import styled from "styled-components";
 interface MainProps {
     onEdit?: (rowIndex: number) => void;
     onDelete?: (rowIndex: number) => void;
-    pagination: Pageable
-    data: IServicesResponse
+    handleAdd: () => void;
+    pagination: Pageable;
+    data: IServicesResponse;
+    NameButtonAdd: string;
 }
 
 const Pagination = styled.div`
@@ -46,7 +48,7 @@ const StyledButton = styled(Button)`
     }
 `;
 
-export default function MainComponent({ data, onEdit, onDelete, pagination }: MainProps) {
+export default function MainComponent({ data, onEdit, onDelete, pagination, handleAdd, NameButtonAdd }: MainProps) {
 
     const searchParams = useSearchParams();
     const router = useRouter();
@@ -74,13 +76,10 @@ export default function MainComponent({ data, onEdit, onDelete, pagination }: Ma
 
     const tbody = content;
 
-    const handleAdd = () => {
-    };
-
     return (
         <MainContent>
             <StyledDiv>
-                <StyledButton type='button' label='Agregar Servicio' onClick={handleAdd} />
+                <StyledButton type='button' label={NameButtonAdd} onClick={handleAdd} />
                 <TableComponent thead={thead} tbody={tbody} onEdit={onEdit} onDelete={onDelete} />
             </StyledDiv>
             <Pagination>

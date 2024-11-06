@@ -35,3 +35,8 @@ interface IServicesResponse {
     first: boolean;
     empty: boolean;
 }
+
+interface IServicesRequest {
+    page: number;
+    size: number;
+}
