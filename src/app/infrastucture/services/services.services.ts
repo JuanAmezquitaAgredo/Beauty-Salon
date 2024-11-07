@@ -2,6 +2,7 @@ import { IRegisterServiceRequest } from "@/app/core/application/dto/services/reg
 import { HttpClient } from "../utils/client-http";
 import { PServices } from "@/app/core/application/ports/services.port";
 import { IRegisterServiceResponse } from "@/app/core/application/dto/services/register-response.dto";
+import { IEditServiceResponse } from "@/app/core/application/dto/services/edit-response.dto";
 
 export class ServicesService implements PServices{
     private clientHttp: HttpClient;
@@ -20,6 +21,16 @@ export class ServicesService implements PServices{
           }
     }
 
+    async getService(id: number): Promise<IServicesResponse> {
+      try {
+        const service = await this.clientHttp.get<IServicesResponse>(`services/${id}`);
+        return service;
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    }
+
     async registerService(service: IRegisterServiceRequest): Promise<IRegisterServiceResponse>{
         try {
             const registerService = await this.clientHttp.post<IRegisterServiceResponse, IRegisterServiceRequest>('services', service)
@@ -34,6 +45,16 @@ export class ServicesService implements PServices{
       try {
         const deleteService = this.clientHttp.delete(`services/${id}`);
         return deleteService;
+      } catch (error) {
+        console.log(error);
+        throw error;
+      }
+    }
+
+    async updateService(id: number, service: IEditServiceRequest): Promise<IEditServiceResponse>{
+      try {
+        const updateService = await this.clientHttp.put<IEditServiceResponse, IEditServiceRequest>(`services/${id}`, service)
+        return updateService;
       } catch (error) {
         console.log(error);
         throw error;

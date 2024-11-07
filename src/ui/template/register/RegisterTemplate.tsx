@@ -1,5 +1,5 @@
 'use client'
-import RegisterForm from "@/ui/organisms/registerServices/RegisterForm";
+import RegisterForm from "@/ui/organisms/formServices/RegisterForm";
 import styled from "styled-components";
 
 const PageContainer = styled.div`

@@ -1,10 +1,11 @@
 'use client'
 import Modal from "@/ui/atoms/modal";
 import MainComponent from "@/ui/organisms/main/main";
-import RegisterForm from "@/ui/organisms/registerServices/RegisterForm";
+import RegisterForm from "@/ui/organisms/formServices/RegisterForm";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
+import EditForm from "@/ui/organisms/formServices/EditForm";
 
 interface IDataService {
     pagination: Pageable
@@ -22,18 +23,25 @@ const StyledContent = styled.div`
 export default function DataService({ data, pagination }: IDataService) {
 
     const router = useRouter();
-    const [ModalOpenEmp, setModalOpenEmp] = useState(false);
+    const [ModalOpenRegister, setModalOpenRegister] = useState(false);
+    const [ModalOpenEdit, setModalOpenEdit] = useState(false);
+    const [SelectIdEdit, setSelectIdEdit] = useState<number>(1);
 
-    const toggleModalEmp = () => {
-        setModalOpenEmp(!ModalOpenEmp);
+    const toggleModalRegister = () => {
+        setModalOpenRegister(!ModalOpenRegister);
+    }
+
+    const toggleModalEdit = () => {
+        setModalOpenEdit(!ModalOpenEdit);
     }
 
     const handleAdd = () => {
-        toggleModalEmp();
+        toggleModalRegister();
     }
 
-    const handleEdit = () => {
-        // Implement your edit logic here
+    const handleEdit = (serviceId : number) => {
+        setSelectIdEdit(serviceId);
+        toggleModalEdit();
     }
 
     const handleDelete = async (serviceId: number) => {
@@ -62,8 +70,11 @@ export default function DataService({ data, pagination }: IDataService) {
     return (
         <StyledContent>
             <MainComponent data={data} onEdit={handleEdit} onDelete={(serviceId) => handleDelete(serviceId)} pagination={pagination} NameButtonAdd="Agregar Servicio" handleAdd={handleAdd} />
-            <Modal isOpen={ModalOpenEmp} onClose={toggleModalEmp} title="Agregar Servicio">
-                    <RegisterForm onClose={toggleModalEmp}/>
+            <Modal isOpen={ModalOpenRegister} onClose={toggleModalRegister} title="Agregar Servicio">
+                    <RegisterForm onClose={toggleModalRegister}/>
+            </Modal>
+            <Modal isOpen={ModalOpenEdit} onClose={toggleModalEdit} title="Editar Servicio">
+                    <EditForm onClose={toggleModalEdit} serviceId={SelectIdEdit}/>
             </Modal>
         </StyledContent>
     )
