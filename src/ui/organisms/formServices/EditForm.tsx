@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation";
 
 interface Iprops {
     onClose: () => void;
-    serviceId: number;
+    Id: number;
 }
 
 const registerSchema = yup.object().shape({
@@ -36,7 +36,7 @@ const Title = styled.h2`
   color: #D4AF37;
 `;
 
-const EditForm = ({ onClose, serviceId }: Iprops) => {
+const EditForm = ({ onClose, Id }: Iprops) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(true);
     const { control, handleSubmit: onSubmit, setValue, formState: { errors } } = useForm<IEditServiceRequest>({
@@ -48,7 +48,7 @@ const EditForm = ({ onClose, serviceId }: Iprops) => {
         const fetchServiceData = async () => {
             try {
                 setIsLoading(true);
-                const response = await fetch(`/api/services/getservice/${serviceId}`);
+                const response = await fetch(`/api/services/getservice/${Id}`);
                 const data = await response.json();
                 setValue("name", data.name);
                 setValue("description", data.description);
@@ -61,12 +61,12 @@ const EditForm = ({ onClose, serviceId }: Iprops) => {
         };
 
         fetchServiceData();
-    }, [serviceId, setValue]);
+    }, [Id, setValue]);
 
     const handleEdit = async (data: IEditServiceRequest) => {
         setIsLoading(true);
         try {
-            const response = await fetch(`/api/services/edit/${serviceId}`, {
+            const response = await fetch(`/api/services/edit/${Id}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)

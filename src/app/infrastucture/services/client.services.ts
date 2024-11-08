@@ -48,4 +48,14 @@ export class ClientService implements PClient{
         }
     }
 
+    async deleteClient(id: number){
+        try {
+          const response = this.clientHttp.delete(`clients/${id}`);
+          return response;
+        } catch (error) {
+          console.log(error);
+          throw error;
+        }
+      }
+
 }

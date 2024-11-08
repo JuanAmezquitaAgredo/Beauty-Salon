@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
 import EditForm from "@/ui/organisms/formClients/EditForm";
+import Loading from "@/ui/atoms/loading";
 
 interface IDataClient {
     pagination: Pageable
@@ -23,6 +24,7 @@ const StyledContent = styled.div`
 export default function DataClients({ data, pagination }: IDataClient) {
 
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
     const [ModalOpenRegister, setModalOpenRegister] = useState(false);
     const [ModalOpenEdit, setModalOpenEdit] = useState(false);
     const [SelectIdEdit, setSelectIdEdit] = useState<number>(1);
@@ -39,43 +41,52 @@ export default function DataClients({ data, pagination }: IDataClient) {
         toggleModalRegister();
     }
 
-    const handleEdit = (serviceId : number) => {
-        setSelectIdEdit(serviceId);
+    const handleEdit = (Id: number) => {
+        setSelectIdEdit(Id);
         toggleModalEdit();
     }
 
-    const handleDelete = async (serviceId: number) => {
+    const handleDelete = async (Id: number) => {
+        setIsLoading(true);
         try {
-            const response = await fetch(`/api/services/delete/${serviceId}`, {
+            const response = await fetch(`/api/clients/delete/${Id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json"
                 }
             });
-    
+
             if (!response.ok) {
                 throw new Error("Error al eliminar el servicio");
             }
-    
+
             alert("Servicio eliminado exitosamente");
             router.refresh();
             return await response.json();
-            
+
         } catch (error) {
             console.error("Error en el DELETE:", error);
             throw error;
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
         <StyledContent>
-            <MainComponent data={data} onEdit={handleEdit} onDelete={(serviceId) => handleDelete(serviceId)} pagination={pagination} NameButtonAdd="Agregar Cliente" handleAdd={handleAdd} />
-            <Modal isOpen={ModalOpenRegister} onClose={toggleModalRegister} title="Agregar Cliente">
-                    <RegisterForm onClose={toggleModalRegister}/>
-            </Modal>
-            <Modal isOpen={ModalOpenEdit} onClose={toggleModalEdit} title="Editar Cliente">
-                    <EditForm onClose={toggleModalEdit} serviceId={SelectIdEdit}/>
-            </Modal>
+            {isLoading ? (
+                <Loading />
+            ) : (
+                <>
+                    <MainComponent data={data} onEdit={handleEdit} onDelete={(Id) => handleDelete(Id)} pagination={pagination} NameButtonAdd="Agregar Cliente" handleAdd={handleAdd} />
+                    <Modal isOpen={ModalOpenRegister} onClose={toggleModalRegister} title="Agregar Cliente">
+                        <RegisterForm onClose={toggleModalRegister} />
+                    </Modal>
+                    <Modal isOpen={ModalOpenEdit} onClose={toggleModalEdit} title="Editar Cliente">
+                        <EditForm onClose={toggleModalEdit} Id={SelectIdEdit} />
+                    </Modal>
+                </>
+            )}
         </StyledContent>
     )
 }
