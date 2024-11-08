@@ -60,7 +60,7 @@ const EditForm = ({ onClose, serviceId }: Iprops) => {
         const fetchServiceData = async () => {
             try {
                 setIsLoading(true);
-                const response = await fetch(`/api/services/getservice/${serviceId}`);
+                const response = await fetch(`/api/clients/getclients/${serviceId}`);
                 const data = await response.json();
                 setValue("firstName", data.firstName);
                 setValue("lastName", data.lastName);
@@ -79,7 +79,7 @@ const EditForm = ({ onClose, serviceId }: Iprops) => {
     const handleEdit = async (data: IEditClientRequest) => {
         setIsLoading(true);
         try {
-            const response = await fetch(`/api/services/edit/${serviceId}`, {
+            const response = await fetch(`/api/clients/edit/${serviceId}`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)

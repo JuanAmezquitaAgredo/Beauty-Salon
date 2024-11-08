@@ -5,7 +5,7 @@ import RegisterForm from "@/ui/organisms/formClients/RegisterForm";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
-import EditForm from "@/ui/organisms/formServices/EditForm";
+import EditForm from "@/ui/organisms/formClients/EditForm";
 
 interface IDataClient {
     pagination: Pageable
