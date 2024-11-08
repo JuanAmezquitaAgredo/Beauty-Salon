@@ -17,4 +17,35 @@ export class ClientService implements PClient{
             throw error;
           }
     }
+
+    async getClient(id: number): Promise<IClientsResponse> {
+        try {
+            const response = this.clientHttp.get<IClientsResponse>(`clients/${id}`);
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
+    async registerClient(client: IRegiterClientRequest): Promise<IRegisterClientResponse> {
+        try {
+            const response = this.clientHttp.post<IRegisterClientResponse, IRegiterClientRequest>(`clients`, client);
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
+    async updateClient(id: number, client: IRegiterClientRequest): Promise<IRegisterClientResponse>{
+        try {
+            const response = this.clientHttp.put<IRegisterClientResponse, IRegiterClientRequest>(`clients/${id}`, client);
+            return response;
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
 }

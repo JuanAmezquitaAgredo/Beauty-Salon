@@ -1,7 +1,7 @@
 'use client'
 import Modal from "@/ui/atoms/modal";
 import MainComponent from "@/ui/organisms/main/main";
-import RegisterForm from "@/ui/organisms/formServices/RegisterForm";
+import RegisterForm from "@/ui/organisms/formClients/RegisterForm";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import styled from "styled-components";
@@ -69,11 +69,11 @@ export default function DataClients({ data, pagination }: IDataClient) {
 
     return (
         <StyledContent>
-            <MainComponent data={data} onEdit={handleEdit} onDelete={(serviceId) => handleDelete(serviceId)} pagination={pagination} NameButtonAdd="Agregar Servicio" handleAdd={handleAdd} />
-            <Modal isOpen={ModalOpenRegister} onClose={toggleModalRegister} title="Agregar Servicio">
+            <MainComponent data={data} onEdit={handleEdit} onDelete={(serviceId) => handleDelete(serviceId)} pagination={pagination} NameButtonAdd="Agregar Cliente" handleAdd={handleAdd} />
+            <Modal isOpen={ModalOpenRegister} onClose={toggleModalRegister} title="Agregar Cliente">
                     <RegisterForm onClose={toggleModalRegister}/>
             </Modal>
-            <Modal isOpen={ModalOpenEdit} onClose={toggleModalEdit} title="Editar Servicio">
+            <Modal isOpen={ModalOpenEdit} onClose={toggleModalEdit} title="Editar Cliente">
                     <EditForm onClose={toggleModalEdit} serviceId={SelectIdEdit}/>
             </Modal>
         </StyledContent>
