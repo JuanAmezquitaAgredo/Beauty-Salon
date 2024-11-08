@@ -1,3 +1,4 @@
+import { IEditServiceResponse } from "../dto/services/edit-response.dto"
 import { IRegisterServiceRequest } from "../dto/services/register-request.dto"
 import { IRegisterServiceResponse } from "../dto/services/register-response.dto"
 
@@ -9,6 +10,13 @@ export interface PServices{
      */
     
     getAllServices(req: IServicesRequest): Promise<IServicesResponse>
+
+    /**
+     * Get a single service by ID
+     * @param {number} - Service ID
+     * @returns {Promise<IServicesResponse>}Service response
+     */
+    getService(id: number): Promise<IServicesResponse>
 
     /**
      * register a service
@@ -24,4 +32,13 @@ export interface PServices{
      */
     
     deleteService(id: number): Promise<void>
+
+    /**
+     * Update a service
+     * @param {number} - Service ID
+     * @param {IEditServiceRequest} - Edit Request
+     * @returns {Promise<IEditServiceResponse>} - Edit Response
+     */
+    updateService(id: number, service: IEditServiceRequest): Promise<IEditServiceResponse>
+
 }

@@ -1,9 +1,17 @@
-import React from 'react'
+import { ClientService } from "@/app/infrastucture/services/client.services";
+import DataClients from "@/ui/template/DataClients/dataClients";
 
-export default function ClientsPage() {
+interface IProps{
+  searchParams: IClientsRequest;
+}
+const useServicesservice = new ClientService();
+export default async function ServicePage({ searchParams }: IProps) {
+  const page = searchParams.page ? parseInt(searchParams.page.toString()) : 1;
+  const response = await useServicesservice.getAllClients({page, size: 10});
+
   return (
-    <div>
-      Desde clientes
-    </div>
+    <>
+      <DataClients data={response} pagination={response.pageable}/>
+    </>
   )
 }
