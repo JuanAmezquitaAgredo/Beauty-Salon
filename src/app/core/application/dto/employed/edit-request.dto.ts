@@ -1,5 +1,4 @@
-export interface IRegisterEmployResponse {
-    id: number;
+interface IEditEmployeRequest {
     firstName: string;
     lastName: string;
     email: string;

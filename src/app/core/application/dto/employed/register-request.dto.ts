@@ -1,6 +1,4 @@
-export interface IRegisterEmplRequest {
-    userName: string;
-    password: string;
+export interface IRegisterEmployRequest {
     firstName: string;
     lastName: string;
     email: string;
