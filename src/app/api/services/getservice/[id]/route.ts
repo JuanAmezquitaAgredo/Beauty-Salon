@@ -1,4 +1,4 @@
-import { ServicesService } from "@/app/infrastucture/services/services.services";
+import { ServicesService } from "@/app/infrastucture/services/services.service";
 import { NextResponse } from "next/server";
 
 // GET

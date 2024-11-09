@@ -1,5 +1,5 @@
 import { IRegisterServiceRequest } from "@/app/core/application/dto/services/register-request.dto";
-import { ServicesService } from "@/app/infrastucture/services/services.services";
+import { ServicesService } from "@/app/infrastucture/services/services.service";
 import { NextResponse } from "next/server";
 
 const useRegisterService = new ServicesService();

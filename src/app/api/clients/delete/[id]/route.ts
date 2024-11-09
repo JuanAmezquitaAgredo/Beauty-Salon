@@ -1,5 +1,5 @@
-import { ClientService } from "@/app/infrastucture/services/client.services";
-import { ServicesService } from "@/app/infrastucture/services/services.services";
+import { ClientService } from "@/app/infrastucture/services/client.service";
+import { ServicesService } from "@/app/infrastucture/services/services.service";
 import { NextResponse } from "next/server";
 
 

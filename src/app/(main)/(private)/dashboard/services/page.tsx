@@ -1,4 +1,4 @@
-import { ServicesService } from "@/app/infrastucture/services/services.services";
+import { ServicesService } from "@/app/infrastucture/services/services.service";
 import DataService from "@/ui/template/DataServices/dataServices";
 
 interface IProps{
