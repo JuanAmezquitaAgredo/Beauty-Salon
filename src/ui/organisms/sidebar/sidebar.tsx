@@ -47,22 +47,22 @@ export default function SideBarComponent() {
       <SidebarList>
         <SidebarItem>
           <StyledLinkWrapper $isActive={pathname === "/dashboard/services"}>
-            <Link href="/dashboard/services">Servicios</Link>
+            <Link href="/dashboard/services" prefetch={false}>Servicios</Link>
           </StyledLinkWrapper>
         </SidebarItem>
         <SidebarItem>
           <StyledLinkWrapper $isActive={pathname === "/dashboard/appointment"}>
-            <Link href="/dashboard/appointment">Citas</Link>
+            <Link href="/dashboard/appointment" prefetch={false}>Citas</Link>
           </StyledLinkWrapper>
         </SidebarItem>
         <SidebarItem>
           <StyledLinkWrapper $isActive={pathname === "/dashboard/employe"}>
-            <Link href="/dashboard/employe">Empleados</Link>
+            <Link href="/dashboard/employe" prefetch={false}>Empleados</Link>
           </StyledLinkWrapper>
         </SidebarItem>
         <SidebarItem>
           <StyledLinkWrapper $isActive={pathname === "/dashboard/clients"}>
-            <Link href="/dashboard/clients">Clientes</Link>
+            <Link href="/dashboard/clients" prefetch={false}>Clientes</Link>
           </StyledLinkWrapper>
         </SidebarItem>
       </SidebarList>
