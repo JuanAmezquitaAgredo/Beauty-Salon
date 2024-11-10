@@ -2,6 +2,8 @@
 import styled from "styled-components";
 import HeaderComponent from "../organisms/header/header";
 import SideBarComponent from "../organisms/sidebar/sidebar";
+import { Suspense } from "react";
+import Loading from "@/app/loading";
 
 interface ILayout {
     children: React.ReactNode;
@@ -24,8 +26,10 @@ export default function Layout({ children }: ILayout) {
         <StylesLayout>
             <HeaderComponent />
             <StyledMain>
-                <SideBarComponent />
-                {children}
+                <Suspense fallback={<Loading />}>
+                    <SideBarComponent />
+                    {children}
+                </Suspense>
             </StyledMain>
         </StylesLayout>
     )

@@ -34,14 +34,14 @@ const Bounce = styled.div`
   }
 `;
 
-function Loading() {
+export default function Loading() {
   return (
     <SpinnerWrapper>
       <Bounce />
       <Bounce />
     </SpinnerWrapper>
   );
-}
+};
 
-export default Loading;
+
 
