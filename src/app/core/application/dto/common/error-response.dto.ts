@@ -1,5 +1,3 @@
-import { string } from "yup";
-
 export interface ErrorResponse {
     status: string;
     code: number;
