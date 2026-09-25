@@ -1,19 +1,16 @@
 import { ClientService } from "@/app/infrastucture/services/client.service";
-import { ServicesService } from "@/app/infrastucture/services/services.service";
+import { handleApiError, parseId } from "@/app/infrastucture/utils/api-response";
 import { NextResponse } from "next/server";
 
+const service = new ClientService();
 
 // DELETE
-export async function DELETE(request: Request,
-    { params }: { params: Promise<{ id: number }> }) {
+export async function DELETE(request: Request, { params }: { params: { id: string } }) {
     try {
-        const useRegisterService = new ClientService();
-        const id = (await params).id
-         await useRegisterService.deleteClient(id);
+        await service.deleteClient(parseId(params.id));
 
-        return NextResponse.json({message: 'Eliminado correctamente'}, { status: 200 });
+        return NextResponse.json({ message: "Eliminado correctamente" }, { status: 200 });
     } catch (error) {
-        console.error("Error en el servidor:", error);
-        return NextResponse.json({ error: "Error al procesar la solicitud" }, { status: 500 });
+        return handleApiError(error);
     }
 }

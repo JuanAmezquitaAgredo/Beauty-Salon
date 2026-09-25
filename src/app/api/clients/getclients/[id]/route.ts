@@ -1,17 +1,16 @@
 import { ClientService } from "@/app/infrastucture/services/client.service";
+import { handleApiError, parseId } from "@/app/infrastucture/utils/api-response";
 import { NextResponse } from "next/server";
 
-// GET
-export async function GET(request: Request, { params }: { params: Promise<{ id: number }> }) {
-    try {
-        const serviceService = new ClientService();
-        const id = (await params).id;
-        
-        const serviceData = await serviceService.getClient(id);
+const service = new ClientService();
 
-        return NextResponse.json(serviceData, { status: 200 });
+// GET
+export async function GET(request: Request, { params }: { params: { id: string } }) {
+    try {
+        const data = await service.getClient(parseId(params.id));
+
+        return NextResponse.json(data, { status: 200 });
     } catch (error) {
-        console.error("Error en el servidor:", error);
-        return NextResponse.json({ error: "Error al procesar la solicitud" }, { status: 500 });
+        return handleApiError(error);
     }
 }

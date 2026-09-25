@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import * as yup from "yup";
+import { getApiErrorMessage } from "@/ui/utils/api-error";
 
 interface Iprops {
     onClose: () => void;
@@ -55,7 +56,6 @@ const RegisterForm = ({ onClose }: Iprops) => {
     const {
         control,
         handleSubmit: onSubmit,
-        setError,
         formState: { errors }
     } = useForm<IRegiterClientRequest>({
         mode: "onChange",
@@ -75,7 +75,7 @@ const RegisterForm = ({ onClose }: Iprops) => {
             });
 
             if (!response.ok) {
-                throw new Error("Error al registrar el servicio");
+                throw new Error(await getApiErrorMessage(response, "Error al registrar el cliente"));
             }
 
             alert('Cliente registrado exitosamente');
@@ -85,7 +85,7 @@ const RegisterForm = ({ onClose }: Iprops) => {
 
         } catch (error) {
             console.error("Error en el POST:", error);
-            throw error;
+            alert((error as Error).message);
         } finally {
             setIsLoading(false);
         }

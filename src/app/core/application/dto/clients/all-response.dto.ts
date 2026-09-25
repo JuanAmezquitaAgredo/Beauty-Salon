@@ -3,8 +3,8 @@ interface Client {
     firstName: string;
     lastName: string;
     email: string;
-    phone: number;
-    appointments: Appointment[];
+    phone: string;
+    appointments?: Appointment[];
 }
 
 interface Pageable {
@@ -53,7 +53,7 @@ interface Service {
     lastName: string;
     email: string;
     phone: string;
-    role: 'ADMIN' | 'USER' | 'OTHER_ROLE'; 
+    role: string; 
   }
   
   interface Appointment {

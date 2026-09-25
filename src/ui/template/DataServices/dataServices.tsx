@@ -7,6 +7,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import EditForm from "@/ui/organisms/formServices/EditForm";
 import Loading from "@/ui/atoms/loading";
+import { getApiErrorMessage } from "@/ui/utils/api-error";
 
 interface IDataService {
     pagination: Pageable
@@ -57,7 +58,7 @@ export default function DataService({ data, pagination }: IDataService) {
             });
 
             if (!response.ok) {
-                throw new Error("Error al eliminar el servicio");
+                throw new Error(await getApiErrorMessage(response, "Error al eliminar el servicio"));
             }
 
             alert("Servicio eliminado exitosamente");
@@ -66,7 +67,7 @@ export default function DataService({ data, pagination }: IDataService) {
 
         } catch (error) {
             console.error("Error en el DELETE:", error);
-            throw error;
+            alert((error as Error).message);
         } finally {
             setIsLoading(false);
         }

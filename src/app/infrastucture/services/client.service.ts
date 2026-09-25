@@ -1,61 +1,38 @@
 import { PClient } from "@/app/core/application/ports/client.port";
-import { HttpClient } from "../utils/client-http";
+import { prisma } from "../db/prisma";
+import { normalizePage, toPage } from "../utils/pagination";
+import { clientSchema, validate } from "../validation/schemas";
+
+const clientSelect = { id: true, firstName: true, lastName: true, email: true, phone: true };
 
 export class ClientService implements PClient{
-    private clientHttp: HttpClient;
-
-    constructor(){
-        this.clientHttp = new HttpClient();
-    }
 
     async getAllClients({size, page}: IClientsRequest): Promise<IClientsResponse> {
-        try {
-            const response = this.clientHttp.get<IClientsResponse>(`clients?page=${page}&size=${size}`);
-            return response;
-          } catch (error) {
-            console.log(error);
-            throw error;
-          }
+        const p = normalizePage(page, size);
+        const [content, total] = await prisma.$transaction([
+            prisma.client.findMany({ select: clientSelect, orderBy: { id: "asc" }, skip: p.skip, take: p.size }),
+            prisma.client.count(),
+        ]);
+        return toPage(content, p.page, p.size, total);
     }
 
-    async getClient(id: number): Promise<IClientsResponse> {
-        try {
-            const response = this.clientHttp.get<IClientsResponse>(`clients/${id}`);
-            return response;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
+    async getClient(id: number): Promise<Client> {
+        return prisma.client.findUniqueOrThrow({ where: { id }, select: clientSelect });
     }
 
     async registerClient(client: IRegiterClientRequest): Promise<IRegisterClientResponse> {
-        try {
-            const response = this.clientHttp.post<IRegisterClientResponse, IRegiterClientRequest>(`clients`, client);
-            return response;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
+        const data = await validate(clientSchema, client);
+        return prisma.client.create({ data, select: clientSelect });
     }
 
-    async updateClient(id: number, client: IRegiterClientRequest): Promise<IRegisterClientResponse>{
-        try {
-            const response = this.clientHttp.put<IRegisterClientResponse, IRegiterClientRequest>(`clients/${id}`, client);
-            return response;
-        } catch (error) {
-            console.log(error);
-            throw error;
-        }
+    async updateClient(id: number, client: IEditClientRequest): Promise<IEditClientResponse>{
+        const data = await validate(clientSchema, client);
+        return prisma.client.update({ where: { id }, data, select: clientSelect });
     }
 
     async deleteClient(id: number){
-        try {
-          const response = this.clientHttp.delete(`clients/${id}`);
-          return response;
-        } catch (error) {
-          console.log(error);
-          throw error;
-        }
-      }
+        // Las citas del cliente se eliminan en cascada (ver prisma/schema.prisma)
+        await prisma.client.delete({ where: { id } });
+    }
 
 }

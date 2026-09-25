@@ -16,7 +16,7 @@ export interface PServices{
      * @param {number} - Service ID
      * @returns {Promise<IServicesResponse>}Service response
      */
-    getService(id: number): Promise<IServicesResponse>
+    getService(id: number): Promise<Service>
 
     /**
      * register a service

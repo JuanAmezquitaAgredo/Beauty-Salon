@@ -10,7 +10,7 @@ interface MainProps {
     onDelete?: (rowIndex: number) => void;
     handleAdd: () => void;
     pagination: Pageable;
-    data: IServicesResponse | IClientsResponse;
+    data: { content: object[]; totalPages: number };
     NameButtonAdd: string;
 }
 

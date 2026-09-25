@@ -1,19 +1,18 @@
+import { IRegisterServiceRequest } from "@/app/core/application/dto/services/register-request.dto";
 import { ServicesService } from "@/app/infrastucture/services/services.service";
+import { handleApiError, parseId } from "@/app/infrastucture/utils/api-response";
 import { NextResponse } from "next/server";
 
+const service = new ServicesService();
 
 // EDIT
-export async function PUT(request: Request,
-    { params }: { params: Promise<{ id: number }> }) {
+export async function PUT(request: Request, { params }: { params: { id: string } }) {
     try {
-        const body: IEditServiceRequest = await request.json();
-        const useEditService = new ServicesService();
-        const id = (await params).id
-        const editService = await useEditService.updateService(id, body);
+        const body: IRegisterServiceRequest = await request.json();
+        const updated = await service.updateService(parseId(params.id), body);
 
-        return NextResponse.json(editService, { status: 200 });
+        return NextResponse.json(updated, { status: 200 });
     } catch (error) {
-        console.error("Error en el servidor:", error);
-        return NextResponse.json({ error: "Error al procesar la solicitud" }, { status: 500 });
+        return handleApiError(error);
     }
 }

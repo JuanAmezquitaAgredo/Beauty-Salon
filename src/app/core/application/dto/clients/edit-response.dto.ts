@@ -3,6 +3,6 @@ interface IEditClientResponse {
     firstName: string;
     lastName: string;
     email: string;
-    phone: number;
-    appointments: Appointment[];
+    phone: string;
+    appointments?: Appointment[];
 }

@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 interface ITableProps {
   thead: string[];
-  tbody: any[];
+  tbody: object[];
   onEdit?: (rowIndex: number) => void;
   onDelete?: (rowIndex: number) => void;
 }
@@ -56,6 +56,13 @@ const ActionButton = styled.button`
   }
 `;
 
+// React no puede renderizar objetos/arrays directamente en una celda
+const formatCell = (value: unknown) => {
+  if (value === null || value === undefined) return "";
+  if (typeof value === "object") return JSON.stringify(value);
+  return String(value);
+};
+
 export default function TableComponent({ thead, tbody, onEdit, onDelete }: ITableProps) {
   return (
     <StyledTable>
@@ -69,12 +76,13 @@ export default function TableComponent({ thead, tbody, onEdit, onDelete }: ITabl
       </thead>
       <tbody>
         {tbody.map((row, rowIndex) => {
-          const id = row[thead[0]]; 
+          const cells = row as Record<string, unknown>;
+          const id = cells[thead[0]] as number;
 
           return (
             <tr key={rowIndex}>
               {thead.map((header, cellIndex) => (
-                <td key={cellIndex}>{row[header]}</td>
+                <td key={cellIndex}>{formatCell(cells[header])}</td>
               ))}
               <td className="Colum-Buttons">
                 <ActionButton

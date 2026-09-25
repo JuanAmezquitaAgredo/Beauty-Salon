@@ -1,18 +1,18 @@
 import { IRegisterServiceRequest } from "@/app/core/application/dto/services/register-request.dto";
 import { ServicesService } from "@/app/infrastucture/services/services.service";
+import { handleApiError } from "@/app/infrastucture/utils/api-response";
 import { NextResponse } from "next/server";
 
-const useRegisterService = new ServicesService();
+const service = new ServicesService();
 
 // POST
 export async function POST(req: Request) {
     try {
         const body: IRegisterServiceRequest = await req.json();
-        const newService = await useRegisterService.registerService(body);
-        
-        return NextResponse.json(newService, { status: 200 });
+        const created = await service.registerService(body);
+
+        return NextResponse.json(created, { status: 201 });
     } catch (error) {
-        console.error("Error en el servidor:", error);
-        return NextResponse.json({ error: "Error al procesar la solicitud" }, { status: 500 });
+        return handleApiError(error);
     }
 }

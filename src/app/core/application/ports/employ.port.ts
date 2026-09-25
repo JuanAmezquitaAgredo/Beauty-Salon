@@ -41,6 +41,6 @@ export interface PEmploye{
      * @returns {Promise<IEmployResponse>} - Employee Response
      */
 
-    getEmployeeById(id: number): Promise<IEmployResponse>
+    getEmployeeById(id: number): Promise<Employee>
 
 }

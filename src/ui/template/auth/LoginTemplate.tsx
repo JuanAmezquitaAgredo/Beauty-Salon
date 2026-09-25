@@ -1,5 +1,6 @@
 'use client'
 import LoginForm from "@/ui/organisms/auth/LoginForm";
+import Link from "next/link";
 import styled from "styled-components";
 
 const PageContainer = styled.div`
@@ -25,12 +26,24 @@ const InstructionText = styled.p`
     color: #666666;
 `;
 
+const FooterText = styled.p`
+    font-size: 0.875rem;
+    text-align: center;
+    color: #666666;
+
+    a {
+        color: #B8A1C9;
+        font-weight: 600;
+    }
+`;
+
 export const LoginTemplate = () => {
     return (
         <PageContainer>
             <CardContainer>
                 <InstructionText>Inicia sesión en tu cuenta</InstructionText>
                 <LoginForm />
+                <FooterText>¿No tienes cuenta? <Link href="/register">Regístrate</Link></FooterText>
             </CardContainer>
         </PageContainer>
     );

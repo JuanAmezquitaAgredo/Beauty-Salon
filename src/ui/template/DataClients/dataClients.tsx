@@ -7,6 +7,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import EditForm from "@/ui/organisms/formClients/EditForm";
 import Loading from "@/ui/atoms/loading";
+import { getApiErrorMessage } from "@/ui/utils/api-error";
 
 interface IDataClient {
     pagination: Pageable
@@ -57,16 +58,16 @@ export default function DataClients({ data, pagination }: IDataClient) {
             });
 
             if (!response.ok) {
-                throw new Error("Error al eliminar el servicio");
+                throw new Error(await getApiErrorMessage(response, "Error al eliminar el cliente"));
             }
 
-            alert("Servicio eliminado exitosamente");
+            alert("Cliente eliminado exitosamente");
             router.refresh();
             return await response.json();
 
         } catch (error) {
             console.error("Error en el DELETE:", error);
-            throw error;
+            alert((error as Error).message);
         } finally {
             setIsLoading(false);
         }

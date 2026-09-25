@@ -1,19 +1,17 @@
 import { ClientService } from "@/app/infrastucture/services/client.service";
+import { handleApiError, parseId } from "@/app/infrastucture/utils/api-response";
 import { NextResponse } from "next/server";
 
+const service = new ClientService();
 
 // EDIT
-export async function PUT(request: Request,
-    { params }: { params: Promise<{ id: number }> }) {
+export async function PUT(request: Request, { params }: { params: { id: string } }) {
     try {
-        const body: IEditClientRequest = await request.json();
-        const useEditService = new ClientService();
-        const id = (await params).id
-        const editService = await useEditService.updateClient(id, body);
+        const body: IRegiterClientRequest = await request.json();
+        const updated = await service.updateClient(parseId(params.id), body);
 
-        return NextResponse.json(editService, { status: 200 });
+        return NextResponse.json(updated, { status: 200 });
     } catch (error) {
-        console.error("Error en el servidor:", error);
-        return NextResponse.json({ error: "Error al procesar la solicitud" }, { status: 500 });
+        return handleApiError(error);
     }
 }

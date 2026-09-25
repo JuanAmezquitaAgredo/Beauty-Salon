@@ -35,6 +35,6 @@ interface Employee {
   lastName: string;
   email: string;
   phone: string;
-  role: 'ADMIN' | 'USER' | 'OTHER_ROLE';
+  role: string;
 }
 

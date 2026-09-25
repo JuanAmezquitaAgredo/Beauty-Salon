@@ -39,7 +39,7 @@ const InputSelect = ({
                 $error={error}
                 {...props}
             >
-                <option>{placeholder}</option>
+                <option value="">{placeholder}</option>
                 {options.map(({ value, label }) => (
                     <option key={value} value={value}>{label}</option>
                 ))}

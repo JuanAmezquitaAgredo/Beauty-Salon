@@ -1,9 +1,17 @@
-import React from 'react'
+import { AppointmentService } from "@/app/infrastucture/services/appointment.service";
+import DataAppointments from "@/ui/template/DataAppointments/dataAppointments";
 
-export default function AppointmentPage() {
+interface IProps{
+  searchParams: { page?: string };
+}
+const useAppointmentService = new AppointmentService();
+export default async function AppointmentPage({ searchParams }: IProps) {
+  const page = searchParams.page ? parseInt(searchParams.page.toString()) : 1;
+  const response = await useAppointmentService.getAllAppointments({page, size: 10});
+
   return (
-    <div>
-      desde Citas
-    </div>
+    <>
+      <DataAppointments data={response} pagination={response.pageable}/>
+    </>
   )
 }

@@ -7,6 +7,7 @@ import styled from "styled-components";
 import * as yup from "yup";
 import Loading from "@/ui/atoms/loading";
 import { useRouter } from "next/navigation";
+import { getApiErrorMessage } from "@/ui/utils/api-error";
 
 interface Iprops {
     onClose: () => void;
@@ -73,7 +74,7 @@ const EditForm = ({ onClose, Id }: Iprops) => {
             });
 
             if (!response.ok) {
-                throw new Error("Error al actualizar el servicio");
+                throw new Error(await getApiErrorMessage(response, "Error al actualizar el servicio"));
             }
 
             alert("Servicio actualizado exitosamente");
@@ -81,6 +82,7 @@ const EditForm = ({ onClose, Id }: Iprops) => {
             onClose();
         } catch (error) {
             console.error("Error en el PUT:", error);
+            alert((error as Error).message);
         } finally {
             setIsLoading(false);
         }

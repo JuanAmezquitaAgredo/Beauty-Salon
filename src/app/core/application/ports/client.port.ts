@@ -21,7 +21,7 @@ export interface PClient{
      * @returns {Promise<IClient>} - Client
      */
 
-    getClient(id: number): Promise<IClientsResponse>
+    getClient(id: number): Promise<Client>
 
     /**
      * Update a client
@@ -30,7 +30,14 @@ export interface PClient{
      * @returns {Promise<IClient>} - Updated Client
      */
 
-    updateClient(id: number, client: IRegiterClientRequest): Promise<IRegisterClientResponse>
+    updateClient(id: number, client: IEditClientRequest): Promise<IEditClientResponse>
+
+    /**
+     * Delete a client
+     * @param {number} - Client ID
+     */
+
+    deleteClient(id: number): Promise<void>
     
     /**
      * Register a client

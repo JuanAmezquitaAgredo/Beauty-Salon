@@ -1,22 +1,19 @@
-import { IRegisterRequest } from "@/app/core/application/dto/services/register-request.dto";
+'use client'
+import { IRegisterUserRequest } from "@/app/core/application/dto/users/register-user-request.dto";
+import { ErrorResponse, FieldError } from "@/app/core/application/dto/common/error-response.dto";
 import Button from "@/ui/atoms/button";
+import Loading from "@/ui/atoms/loading";
 import FormField from "@/ui/molecules/common/FormField";
-import { FormSelectField } from "@/ui/molecules/common/FormSelectField";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import * as yup from "yup";
 
 const registerSchema = yup.object().shape({
-    name: yup
-        .string()
-        .min(1, 'El nombre de usuario debe tener al menos 1 caracter')
-        .required('Nombre de usuario Requerido'),
-    description: yup
-        .string()
-        .min(8, 'La contraseña debe tener al menos 8 caracteres')
-        .required('Contraseña Requerida'),
-    price: yup
+    firstName: yup
         .string()
         .min(1, 'El nombre debe tener al menos 1 caracter')
         .required('Nombre Requerido'),
@@ -30,10 +27,11 @@ const registerSchema = yup.object().shape({
         .required('Email Requerido'),
     phone: yup
         .string()
-        .required('Teléfono Requerido'),
-    role: yup
+        .default(""),
+    password: yup
         .string()
-        .required('Rol Requerido'),
+        .min(8, 'La contraseña debe tener al menos 8 caracteres')
+        .required('Contraseña Requerida'),
 })
 
 const FormContainer = styled.form`
@@ -54,89 +52,111 @@ const Title = styled.h2`
 `;
 
 const RegisterForm = () => {
+    const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
     const {
         control,
         handleSubmit,
         setError,
         formState: { errors }
-    } = useForm<IRegisterRequest>({
+    } = useForm<IRegisterUserRequest>({
         mode: "onChange",
         reValidateMode: "onChange",
-        resolver: yupResolver(registerSchema)
+        resolver: yupResolver(registerSchema),
+        defaultValues: { firstName: "", lastName: "", email: "", phone: "", password: "" },
     })
 
-    const handleRegister = (data: IRegisterRequest) => {
-        console.log(data);
+    const handleError = (errorData: ErrorResponse) => {
+        const first = errorData.errors?.[0];
+        if (!first) return;
+        if ("field" in first) {
+            (errorData.errors as FieldError[]).forEach(({ field, error }) => {
+                setError(field as keyof IRegisterUserRequest, { message: error });
+            });
+        } else {
+            setError("email", { message: first.message });
+        }
+    };
+
+    const handleRegister = async (data: IRegisterUserRequest) => {
+        setIsLoading(true);
+        try {
+            const response = await fetch("/api/users/register", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            });
+
+            if (!response.ok) {
+                handleError(await response.json());
+                return;
+            }
+
+            // Inicia sesión automáticamente con el usuario recién creado
+            const result = await signIn("credentials", {
+                redirect: false,
+                username: data.email,
+                password: data.password,
+            });
+
+            router.push(result?.error ? "/login" : "/dashboard/services");
+        } catch (error) {
+            console.error("Error en el registro:", error);
+            alert("Error al registrar el usuario");
+        } finally {
+            setIsLoading(false);
+        }
     }
+
+    if (isLoading) return <Loading />;
 
     return (
         <FormContainer onSubmit={handleSubmit(handleRegister)}>
             <Title>Registro</Title>
 
-            <FormField<IRegisterRequest>
+            <FormField<IRegisterUserRequest>
                 control={control}
-                type="userName"
-                name="userName"
-                label="Nombre de Usuario"
-                error={errors.userName}
-                placeholder="Ingrese nombre de Usuario"
-            />
-
-            <FormField<IRegisterRequest>
-                control={control}
-                type="password"
-                name="password"
-                label="Contraseña"
-                error={errors.password}
-                placeholder="Ingrese Contraseña"
-            />
-
-            <FormField<IRegisterRequest>
-                control={control}
-                type="firstName"
+                type="text"
                 name="firstName"
                 label="Nombre"
                 error={errors.firstName}
                 placeholder="Ingrese Nombre"
             />
 
-            <FormField<IRegisterRequest>
+            <FormField<IRegisterUserRequest>
                 control={control}
-                type="lastName"
+                type="text"
                 name="lastName"
                 label="Apellido"
                 error={errors.lastName}
                 placeholder="Ingrese Apellido"
             />
 
-            <FormField<IRegisterRequest>
+            <FormField<IRegisterUserRequest>
                 control={control}
                 type="email"
                 name="email"
-                label="Email"
+                label="Correo Electrónico"
                 error={errors.email}
-                placeholder="Ingrese Email"
+                placeholder="Ingrese Correo Electrónico"
             />
 
-            <FormField<IRegisterRequest>
+            <FormField<IRegisterUserRequest>
                 control={control}
-                type="phone"
+                type="text"
                 name="phone"
                 label="Teléfono"
                 error={errors.phone}
-                placeholder="Ingrese Teléfono"
+                placeholder="Ingrese Teléfono (opcional)"
             />
 
-            <FormSelectField<IRegisterRequest>
+            <FormField<IRegisterUserRequest>
                 control={control}
-                options={[
-                    { value: "admin", label: "Administrador" },
-                    { value: "user", label: "Usuario" }
-                ]}
-                name="role"
-                label="Rol"
-                error={errors.role}
-                placeholder="Ingrese Rol"
+                type="password"
+                name="password"
+                label="Contraseña"
+                error={errors.password}
+                placeholder="Ingrese Contraseña"
             />
 
             <Button type="submit" label="Registrarse" />
